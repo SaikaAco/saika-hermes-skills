@@ -16,11 +16,11 @@ These packages are curated from workflows used in practice. The repository start
 
 ```bash
 hermes skills tap add SaikaAco/saika-hermes-skills
-hermes skills search bounded-grilling
+hermes skills inspect SaikaAco/saika-hermes-skills/bounded-grilling
 hermes skills install SaikaAco/saika-hermes-skills/bounded-grilling
 ```
 
-Install the other packages by replacing the final slug with `skill-lifecycle-management` or `kanban-workflows`.
+Install the other packages by replacing the final slug with `skill-lifecycle-management` or `kanban-workflows`. Direct identifiers remain usable even while a newly published community tap is still propagating through search indexes.
 
 A single skill can also be installed directly without subscribing to the tap:
 
