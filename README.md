@@ -12,7 +12,7 @@ These packages are curated from workflows used in practice. The repository remai
 | [`burnable-visual-briefs`](skills/burnable-visual-briefs/SKILL.md) | 1.1.0 | Create temporary, diagram-first HTML briefs with strict privacy, expiry, validation, and rendering gates. |
 | [`context-budget-orchestration`](skills/context-budget-orchestration/SKILL.md) | 1.0.1 | Contain bulky context, phase long work, bound delegation and retries, and reserve capacity for verification. |
 | [`hermes-workspace-hygiene`](skills/hermes-workspace-hygiene/SKILL.md) | 1.0.0 | Keep generated artifacts scoped and make cleanup manifest-bound, approval-gated, and recoverable. |
-| [`skill-lifecycle-management`](skills/skill-lifecycle-management/SKILL.md) | 1.0.0 | Author, validate, package, consolidate, and archive Hermes skills safely. |
+| [`skill-lifecycle-management`](skills/skill-lifecycle-management/SKILL.md) | 1.1.0 | Author, package, attribute, publish, consumer-test, consolidate, and archive Hermes skills safely. |
 | [`kanban-workflows`](skills/kanban-workflows/SKILL.md) | 1.1.0 | Coordinate durable Hermes Kanban work with retry-safe creation, role boundaries, and verifiable handoffs. |
 | [`to-spec`](skills/to-spec/SKILL.md) | 1.1.0 | Adaptive LIGHT/FULL compilation of settled decisions into traceable requirements and acceptance evidence. |
 | [`wayfinder`](skills/wayfinder/SKILL.md) | 1.1.0 | Adaptive LIGHT/FULL route finding for dependent, foggy, or multi-session work. |
