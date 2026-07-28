@@ -2,6 +2,19 @@
 
 This repository is curated by SaikaAco with Hermes Agent.
 
+## Matt Pocock’s Wayfinder and To-Spec
+
+The following packages are MIT-licensed adaptations of Matt Pocock’s public skills:
+
+- [`skills/wayfinder/SKILL.md`](skills/wayfinder/SKILL.md), adapted from [Matt Pocock’s Wayfinder](https://github.com/mattpocock/skills/tree/main/skills/engineering/wayfinder);
+- [`skills/to-spec/SKILL.md`](skills/to-spec/SKILL.md), adapted from [Matt Pocock’s To-Spec](https://github.com/mattpocock/skills/tree/main/skills/engineering/to-spec).
+
+The adapted Wayfinder retains the destination, map, decision-ticket, frontier, fog, and one-ticket-at-a-time concepts. The adapted To-Spec retains the synthesis of already-settled context into a specification without another interview.
+
+The Saika/Hermes adaptations add adaptive LIGHT/FULL invocation, Hermes metadata, authority and persistence gates, source traceability, coverage checks, recovery states, negative requirements, acceptance evidence, and explicit boundaries against silent publication or implementation.
+
+These adaptations are maintained independently. Matt Pocock has not reviewed or endorsed them. His complete 2026 MIT copyright and permission notice is preserved in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
 ## Hermes Agent
 
 The skills target the public [Hermes Agent](https://github.com/NousResearch/hermes-agent) skill format and operating model. Hermes Agent is maintained by Nous Research and its contributors. This community repository is not an official Nous Research distribution.

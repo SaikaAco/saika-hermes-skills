@@ -2,7 +2,7 @@
 
 A small public tap of bounded, reusable workflow skills for [Hermes Agent](https://github.com/NousResearch/hermes-agent).
 
-These packages are curated from workflows used in practice. The repository starts deliberately small: only portable skills with clear boundaries and no personal configuration are included.
+These packages are curated from workflows used in practice. The repository remains deliberately focused: only portable skills with clear boundaries and no personal configuration are included.
 
 ## Available skills
 
@@ -11,6 +11,8 @@ These packages are curated from workflows used in practice. The repository start
 | [`bounded-grilling`](skills/bounded-grilling/SKILL.md) | 1.0.0 | Resolve a small number of material human decisions without endless interviewing or automatic implementation. |
 | [`skill-lifecycle-management`](skills/skill-lifecycle-management/SKILL.md) | 1.0.0 | Author, validate, package, consolidate, and archive Hermes skills safely. |
 | [`kanban-workflows`](skills/kanban-workflows/SKILL.md) | 1.1.0 | Coordinate durable Hermes Kanban work with retry-safe creation, role boundaries, and verifiable handoffs. |
+| [`to-spec`](skills/to-spec/SKILL.md) | 1.1.0 | Adaptive LIGHT/FULL compilation of settled decisions into traceable requirements and acceptance evidence. |
+| [`wayfinder`](skills/wayfinder/SKILL.md) | 1.1.0 | Adaptive LIGHT/FULL route finding for dependent, foggy, or multi-session work. |
 
 ## Install as a Hermes tap
 
@@ -20,7 +22,7 @@ hermes skills inspect SaikaAco/saika-hermes-skills/bounded-grilling
 hermes skills install SaikaAco/saika-hermes-skills/bounded-grilling
 ```
 
-Install the other packages by replacing the final slug with `skill-lifecycle-management` or `kanban-workflows`. Direct identifiers remain usable even while a newly published community tap is still propagating through search indexes.
+Install the other packages by replacing the final slug with `skill-lifecycle-management`, `kanban-workflows`, `to-spec`, or `wayfinder`. Direct identifiers remain usable even while a newly published community tap is still propagating through search indexes.
 
 A single skill can also be installed directly without subscribing to the tap:
 
@@ -37,6 +39,8 @@ skills/
   bounded-grilling/SKILL.md
   skill-lifecycle-management/SKILL.md
   kanban-workflows/SKILL.md
+  to-spec/SKILL.md
+  wayfinder/SKILL.md
 scripts/
   validate_skills.py
 ```
@@ -55,8 +59,8 @@ The validator checks required frontmatter, directory/name agreement, balanced Ma
 
 - This is a curated community repository, not an official Nous Research distribution.
 - Personal profile maps, local filesystem policy, credentials, memory, and private operational configuration are intentionally excluded.
-- Upstream/bundled Hermes skills and third-party-heavy packages are not republished here.
-- See [ACKNOWLEDGMENTS.md](ACKNOWLEDGMENTS.md) for influences and attribution.
+- Upstream or bundled Hermes skills are not mirrored wholesale; adapted third-party material is published only after review with its required notices.
+- See [ACKNOWLEDGMENTS.md](ACKNOWLEDGMENTS.md) for provenance and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for retained license notices.
 
 ## License
 
