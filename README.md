@@ -10,6 +10,7 @@ These packages are curated from workflows used in practice. The repository remai
 |---|---:|---|
 | [`bounded-grilling`](skills/bounded-grilling/SKILL.md) | 1.0.0 | Resolve a small number of material human decisions without endless interviewing or automatic implementation. |
 | [`burnable-visual-briefs`](skills/burnable-visual-briefs/SKILL.md) | 1.1.0 | Create temporary, diagram-first HTML briefs with strict privacy, expiry, validation, and rendering gates. |
+| [`context-budget-orchestration`](skills/context-budget-orchestration/SKILL.md) | 1.0.0 | Contain bulky context, phase long work, bound delegation and retries, and reserve capacity for verification. |
 | [`hermes-workspace-hygiene`](skills/hermes-workspace-hygiene/SKILL.md) | 1.0.0 | Keep generated artifacts scoped and make cleanup manifest-bound, approval-gated, and recoverable. |
 | [`skill-lifecycle-management`](skills/skill-lifecycle-management/SKILL.md) | 1.0.0 | Author, validate, package, consolidate, and archive Hermes skills safely. |
 | [`kanban-workflows`](skills/kanban-workflows/SKILL.md) | 1.1.0 | Coordinate durable Hermes Kanban work with retry-safe creation, role boundaries, and verifiable handoffs. |
@@ -24,7 +25,7 @@ hermes skills inspect SaikaAco/saika-hermes-skills/bounded-grilling
 hermes skills install SaikaAco/saika-hermes-skills/bounded-grilling
 ```
 
-Install the other packages by replacing the final slug with `burnable-visual-briefs`, `hermes-workspace-hygiene`, `skill-lifecycle-management`, `kanban-workflows`, `to-spec`, or `wayfinder`. Direct identifiers remain usable even while a newly published community tap is still propagating through search indexes.
+Install the other packages by replacing the final slug with `burnable-visual-briefs`, `context-budget-orchestration`, `hermes-workspace-hygiene`, `skill-lifecycle-management`, `kanban-workflows`, `to-spec`, or `wayfinder`. Direct identifiers remain usable even while a newly published community tap is still propagating through search indexes.
 
 A single skill can also be installed directly without subscribing to the tap:
 
@@ -43,6 +44,7 @@ skills/
     SKILL.md
     scripts/validate_brief.py
     templates/burnable-visual-brief.html
+  context-budget-orchestration/SKILL.md
   hermes-workspace-hygiene/SKILL.md
   skill-lifecycle-management/SKILL.md
   kanban-workflows/SKILL.md

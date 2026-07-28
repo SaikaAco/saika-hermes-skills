@@ -29,6 +29,10 @@ The published skill is a deliberately bounded adaptation: it limits opening deci
 
 `burnable-visual-briefs` and `hermes-workspace-hygiene` were developed from Saika/Hermes operating practice. They pair temporary, diagram-first communication with manifest-bound, approval-gated artifact cleanup.
 
+## Context Budget Orchestration
+
+`context-budget-orchestration` is an original Saika/Hermes operational synthesis. It combines proportional phase budgeting, context containment, bounded delegation contracts, retry circuit breakers, recovery ledgers, and parent-side verification. Its public edition removes operator-specific profile, provider, billing, and model policy.
+
 ## Other packages
 
 `skill-lifecycle-management` and `kanban-workflows` were developed from practical Hermes skill-maintenance and durable-work orchestration needs.
