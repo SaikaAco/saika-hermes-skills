@@ -25,6 +25,10 @@ The skills target the public [Hermes Agent](https://github.com/NousResearch/herm
 
 The published skill is a deliberately bounded adaptation: it limits opening decisions, requires an evidence/value gate, separates interviewing from persistence, and forbids automatic implementation or publication.
 
+## Artifact lifecycle
+
+`burnable-visual-briefs` and `hermes-workspace-hygiene` were developed from Saika/Hermes operating practice. They pair temporary, diagram-first communication with manifest-bound, approval-gated artifact cleanup.
+
 ## Other packages
 
 `skill-lifecycle-management` and `kanban-workflows` were developed from practical Hermes skill-maintenance and durable-work orchestration needs.
