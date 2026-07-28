@@ -15,6 +15,14 @@ The Saika/Hermes adaptations add adaptive LIGHT/FULL invocation, Hermes metadata
 
 These adaptations are maintained independently. Matt Pocock has not reviewed or endorsed them. His complete 2026 MIT copyright and permission notice is preserved in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
+## Jesse Vincent’s Superpowers Writing Plans
+
+[`skills/plan/SKILL.md`](skills/plan/SKILL.md) is an MIT-licensed adaptation of Jesse Vincent’s [Superpowers `writing-plans`](https://github.com/obra/superpowers/tree/3dcbd5c4b48e02263fbf4a3c01e3fe4f81d584d9/skills/writing-plans).
+
+The adaptation retains comprehensive implementation planning, exact paths, task decomposition, test-first examples, DRY/YAGNI discipline, interface contracts, placeholder checks, self-review, and execution handoff. It adds strict Hermes plan-only authority, backend-relative `.hermes/plans/` storage, project mutation boundaries, task right-sizing without minute quotas, conditional execution routes, and explicit separation between planning and implementation authorization.
+
+This adaptation is maintained independently. Jesse Vincent and the Superpowers project have not reviewed or endorsed it. The complete 2025 MIT copyright and permission notice is preserved in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
 ## Hermes Agent
 
 The skills target the public [Hermes Agent](https://github.com/NousResearch/hermes-agent) skill format and operating model. Hermes Agent is maintained by Nous Research and its contributors. This community repository is not an official Nous Research distribution.
@@ -32,6 +40,10 @@ The published skill is a deliberately bounded adaptation: it limits opening deci
 ## Context Budget Orchestration
 
 `context-budget-orchestration` is an original Saika/Hermes operational synthesis. It combines proportional phase budgeting, context containment, bounded delegation contracts, retry circuit breakers, recovery ledgers, and parent-side verification. Its public edition removes operator-specific profile, provider, billing, and model policy.
+
+## Hermes Backup and Recovery
+
+`hermes-backup-recovery` is an original Saika/Hermes method developed from operating encrypted Hermes backups and clean-room recovery drills. It combines a secret-free Git control-plane layer with atomic encrypted Restic snapshots, WAL-safe SQLite capture, exact exclusion/completion manifests, retention gates, and verified restore-before-cutover procedures. Public instructions omit concrete storage endpoints, schedules, credentials, and personal source roots.
 
 ## Other packages
 

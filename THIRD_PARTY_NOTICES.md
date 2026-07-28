@@ -1,6 +1,6 @@
 # Third-Party Notices
 
-This repository contains adapted third-party material. The repository-level [LICENSE](LICENSE) applies to SaikaAco contributions; the notice below is retained for the identified adapted material.
+This repository contains adapted third-party material. The repository-level [LICENSE](LICENSE) applies to SaikaAco contributions; the notices below are retained for the identified adapted material.
 
 ## Matt Pocock’s Wayfinder and To-Spec
 
@@ -38,3 +38,39 @@ SOFTWARE.
 ```
 
 The adaptations are maintained independently and do not imply Matt Pocock’s review or endorsement.
+
+## Jesse Vincent’s Superpowers Writing Plans
+
+Affected package:
+
+- `skills/plan/SKILL.md`
+
+Upstream source: <https://github.com/obra/superpowers/tree/3dcbd5c4b48e02263fbf4a3c01e3fe4f81d584d9/skills/writing-plans>
+
+The affected package is adapted and redistributed under the following MIT License notice from the upstream repository:
+
+```text
+MIT License
+
+Copyright (c) 2025 Jesse Vincent
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+The adaptation is maintained independently and does not imply Jesse Vincent’s or the Superpowers project’s review or endorsement.
