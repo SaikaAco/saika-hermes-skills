@@ -1,7 +1,7 @@
 ---
 name: context-budget-orchestration
 description: "Use when work is multi-step, context-heavy, research-heavy, or delegated. Contains bulky context, phases work, bounds retries, delegates independent reasoning, and reserves capacity for verification."
-version: 1.0.0
+version: 1.0.1
 author: "SaikaAco with Hermes Agent"
 license: MIT
 platforms: [linux, macos, windows]
@@ -266,7 +266,7 @@ When the parent starts repeating calls, losing constraints, or depending on memo
 ## Verification checklist
 
 - [ ] Endpoint, success criteria, stop conditions, and reserve were stated before heavy work.
-- [ ] Deterministic bulk output was filtered outside the parent context.
+- [ ] Deterministic bulk output was reduced to decision-relevant summaries before parent synthesis.
 - [ ] Required independent reasoning was delegated early with bounded contracts.
 - [ ] User and runtime delegation/provider limits were respected.
 - [ ] Same-surface retries were capped and switched after failure.
