@@ -1,14 +1,14 @@
 ---
 name: bounded-grilling
-description: "Use only when the user explicitly asks to be grilled, interviewed, or stress-tested, or when a named Wayfinder HITL decision ticket invokes it. Resolves bounded human decisions with evidence, recommendations, traceable records, and no implementation."
-version: 1.0.0
+description: "Use only when the user explicitly asks to be grilled, interviewed, or stress-tested, when /wf routes one genuine human-owned ambiguity, or when a named Wayfinder HITL decision ticket invokes it. Resolves bounded human decisions with evidence, recommendations, traceable records, and no implementation."
+version: 1.2.0
 author: Hermes Agent
 license: MIT
 platforms: [linux, macos, windows]
 metadata:
   hermes:
-    tags: [grilling, wayfinder, decisions, product-planning, hitl]
-    related_skills: [kanban-workflows, research-intelligence, wayfinder, to-spec]
+    tags: [grilling, wayfinder, decisions, prototype, product-planning, hitl]
+    related_skills: [wf, kanban-workflows, research-intelligence, wayfinder, to-spec]
 ---
 
 # Bounded Grilling
@@ -25,6 +25,8 @@ recommends a default, returns a traceable decision packet, and stops.
 Run only when:
 
 - the user explicitly asks to be grilled, interviewed, or stress-tested; or
+- the shared `/wf` router invokes one genuine human-owned ambiguity under the
+  user's standing ask-not-assume instruction; or
 - the user explicitly invokes Wayfinder charting, which authorizes one bounded
   opening-router call; or
 - an existing, named Wayfinder HITL decision ticket invokes the skill.
@@ -99,11 +101,34 @@ Use only with one existing, named human-decision ticket.
 5. Return exactly one outcome:
    - `RESOLVED` — one accepted value is ready to persist;
    - `DEFERRED` — the human explicitly deferred the decision;
-   - `BLOCKED` — evidence or authority is insufficient.
-6. Return the compact decision packet to the invoking Wayfinder workflow.
-7. The ticket remains unresolved until Wayfinder confirms persistence.
-8. After authorized persistence and map/dependency updates, stop. Do not
+   - `BLOCKED` — evidence or authority is insufficient;
+   - `PROTOTYPE_REQUIRED` — the decision cannot be judged faithfully in prose
+     and needs one bounded runnable artifact plus human reaction.
+6. For `PROTOTYPE_REQUIRED`, name exactly one decision question, choose `LOGIC`
+   or `UI`, state artifact constraints/authority still needed, and return no
+   accepted value. The invoking Wayfinder keeps this decision open and owns any
+   prototype ticket creation/linking.
+7. Otherwise return the compact decision packet to the invoking Wayfinder
+   workflow.
+8. The ticket remains unresolved until Wayfinder confirms persistence.
+9. After authorized persistence and map/dependency updates, stop. Do not
    select or begin the next ticket.
+
+## Prototype escalation gate
+
+Use `PROTOTYPE_REQUIRED` only when concrete interaction would materially reduce
+uncertainty that questioning cannot, such as:
+
+- legal/illegal state transitions or behavior at difficult edges (`LOGIC`);
+- UI hierarchy, navigation, layout, or primary affordance (`UI`);
+- multiple plausible structures whose consequences cannot be compared reliably
+  from prose.
+
+Do not escalate merely because a prototype would be interesting or because the
+human dislikes choosing. A prototype must still answer one route-changing
+question. Return the proposed branch, minimum cases/variants, standing
+constraints, and missing artifact authority. Do not build it inside Bounded
+Grilling.
 
 ## Decision-value gate
 
@@ -189,18 +214,24 @@ Opening-router mode is complete only when:
 
 Wayfinder mode is complete only when:
 
-- one branch is `RESOLVED`, `DEFERRED`, or `BLOCKED`;
-- the compact packet is returned;
+- one branch is `RESOLVED`, `DEFERRED`, `BLOCKED`, or
+  `PROTOTYPE_REQUIRED`;
+- a `PROTOTYPE_REQUIRED` return names one question, branch, constraints, and
+  missing authority without claiming an accepted decision;
+- the compact packet is returned for every other outcome;
 - the invoking Wayfinder workflow reports whether persistence succeeded;
 - authorized map/dependency effects are reported; and
-- no next ticket or implementation phase has begun.
+- no next ticket, prototype build, or implementation phase has begun.
 
-Every subsequent planning or implementation phase requires a fresh user
-action.
+Returning a resolved WF clarification to the already-authorized parent task is
+not a new planning or implementation phase; that task may resume within its
+existing scope. Any downstream phase not already authorized by the parent
+request requires a fresh user action.
 
 ## Common pitfalls
 
-1. **Unsolicited grilling.** Offer it; do not auto-start.
+1. **Unsolicited grilling.** Outside explicit, `/wf`-routed, or named-ticket
+   authority, offer it; do not auto-start.
 2. **Endless interrogation.** Enforce the opening-router and one-ticket bounds.
 3. **Low-value questions.** Apply the decision-value gate before asking.
 4. **Asking for facts.** Research them and cite the evidence.
@@ -211,19 +242,25 @@ action.
 8. **Summary weakening.** Downstream work should reference authoritative
    decision IDs rather than rely only on compressed prose.
 9. **Tracker coupling.** Grill returns the packet; Wayfinder owns mutations.
-10. **Implementation drift.** Stop after route or persistence.
+10. **Prototyping inside the interview.** Return `PROTOTYPE_REQUIRED`; do not
+    build, select, or imply acceptance inside Bounded Grilling.
+11. **Implementation drift.** Stop after route or persistence.
 
 ## Verification checklist
 
-- [ ] Invocation was explicit or attached to one named Wayfinder HITL ticket.
+- [ ] Invocation was explicit, routed by `/wf` for one genuine human-owned
+      ambiguity, or attached to one named Wayfinder HITL ticket.
 - [ ] Every question passed the decision-value gate.
 - [ ] Discoverable facts were investigated instead of delegated to the user.
 - [ ] Only one question was active at a time.
 - [ ] Recommendation, trade-off, and options were clear.
 - [ ] Opening mode resolved at most three route-changing decisions.
 - [ ] Opening mode returned a valid `grill-route-v1` handoff.
-- [ ] Wayfinder mode resolved exactly one decision branch.
-- [ ] The compact packet contains every required core field.
+- [ ] Wayfinder mode resolved exactly one decision branch or returned one
+      bounded `PROTOTYPE_REQUIRED` handoff.
+- [ ] `PROTOTYPE_REQUIRED` was used only when interaction adds decision value,
+      and no artifact was built inside Grill.
+- [ ] The compact packet contains every required core field when applicable.
 - [ ] Grill performed no tracker mutation.
 - [ ] Persistence status and dependency effects are explicit.
 - [ ] The correct mode-specific route or outcome was returned.

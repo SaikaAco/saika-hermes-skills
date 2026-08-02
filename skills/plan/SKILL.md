@@ -1,7 +1,7 @@
 ---
 name: plan
 description: "Use when the user wants an actionable implementation plan instead of execution. Produces a project-local markdown contract with exact paths, interfaces, tests, constraints, reviewable tasks, and no mutation beyond the plan file."
-version: 2.1.0
+version: 2.1.1
 author: "SaikaAco with Hermes Agent, adapted from Jesse Vincent's Superpowers"
 license: MIT
 platforms: [linux, macos, windows]
@@ -23,7 +23,7 @@ It retains comprehensive implementation planning, exact file paths, task decompo
 
 The Hermes adaptation adds strict plan-only authority, backend-relative `.hermes/plans/` storage, project mutation boundaries, context-aware inference, task right-sizing without minute quotas, conditional execution routes, and explicit separation between planning and implementation authorization.
 
-This adaptation is independently maintained and is not endorsed by Jesse Vincent or the Superpowers project. The complete upstream MIT notice is preserved in the repository's `THIRD_PARTY_NOTICES.md`.
+This adaptation is independently maintained and is not endorsed by Jesse Vincent or the Superpowers project. The complete upstream MIT notice is preserved in [`references/third-party-notices.md`](references/third-party-notices.md).
 
 ## Core behavior
 

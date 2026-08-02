@@ -1,14 +1,14 @@
 ---
 name: to-spec
 description: "Use when settled requirements need a clear execution contract. Applies a lightweight in-session specification automatically for medium jobs and a durable traceable draft when explicitly requested or when complex work needs persistent acceptance evidence."
-version: 1.1.0
+version: 1.2.0
 author: "SaikaAco with Hermes Agent, adapted from Matt Pocock"
 license: MIT
 platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [specification, requirements, traceability, acceptance, wayfinder]
-    related_skills: [bounded-grilling, wayfinder, plan]
+    related_skills: [bounded-grilling, wayfinder, to-tickets, plan]
     upstream: "https://github.com/mattpocock/skills/tree/main/skills/engineering/to-spec"
 ---
 
@@ -21,6 +21,9 @@ This is an MIT-licensed adaptation of Matt Pocock's public
 It retains conversation-to-spec synthesis without another interview while
 adding Hermes-specific authority, traceability, coverage, blocking, safety,
 and persistence contracts.
+
+The complete upstream MIT notice is preserved in
+[`references/third-party-notices.md`](references/third-party-notices.md).
 
 ## Overview
 
@@ -37,7 +40,13 @@ clear route:
 
 large or foggy route:
   Bounded Grill -> Wayfinder -> To-Spec
+
+approved implementation decomposition:
+  To-Spec -> To-Tickets -> optional per-ticket Plan / authorized execution
 ```
+
+To-Tickets is a separate, explicitly invoked compiler. To-Spec may emit a
+traceable handoff but never drafts, publishes, labels, or runs tickets itself.
 
 ## Adaptive invocation and operating level
 
@@ -333,6 +342,40 @@ Use `gap` rather than pretending coverage when a decision was weakened,
 omitted, contradicted, or cannot be verified. A route-changing gap changes the
 result to `BLOCKED`.
 
+## To-Tickets handoff
+
+When the specification or LIGHT contract passes its coverage/readiness gate,
+To-Spec may return this traceable downstream packet without creating tickets:
+
+```yaml
+schema: to-spec-ticketization-v1
+spec_state: LIGHT_READY | DRAFT_READY
+spec_handle: <chat handle or authorized path>
+source_snapshot: <version/revision/content fingerprint>
+source_owner: <acceptance owner>
+requirement_ids: []
+decision_handles: []
+evidence_handles: []
+coverage_status: passed
+grounding_status: passed
+persistence: none | confirmed
+decomposition_authority: pending | granted
+publication_authority: none
+```
+
+Rules:
+
+- Emit it only after the selected To-Spec readiness and coverage gates pass.
+- `decomposition_authority: granted` requires the current user to explicitly
+  accept this exact source snapshot for To-Tickets decomposition; otherwise use
+  `pending`.
+- `publication_authority` is always `none`. To-Tickets must show the complete
+  graph and obtain separate approval bound to that exact graph and backend.
+- If the specification changes, invalidate the snapshot, coverage evidence,
+  and any downstream draft graph.
+- Do not invoke To-Tickets automatically. Return the packet and stop unless the
+  current request already explicitly includes ticket decomposition.
+
 ## Output and persistence
 
 LIGHT stays in chat and reports its compact contract plus the authorized next
@@ -358,6 +401,8 @@ After producing the draft, report:
 - source handles consumed;
 - requirement and decision-coverage counts;
 - assumptions, deferrals, and gaps;
+- ticketization handoff state (`not-emitted`, `pending`, or `granted`) and source
+  snapshot when emitted;
 - any external publications, tasks, labels, planning, or implementation
   actions actually taken, plus their explicit authority source; normally
   `none`.
@@ -392,12 +437,14 @@ implementation.
 6. **Stale decisions.** Preserve history but compile only current records.
 7. **Premature publication.** A draft is local/chat-only without approval.
 8. **Execution signaling.** Never apply an agent-ready label automatically.
-9. **Task leakage.** Requirements and acceptance evidence are not an
-   implementation task list.
-10. **Implementation drift.** FULL stops after the draft unless the current
+9. **Ticketization leakage.** A downstream handoff does not draft or publish
+   tickets; decomposition and publication remain separately authorized.
+10. **Task leakage.** Requirements and acceptance evidence are not an
+    implementation task list.
+11. **Implementation drift.** FULL stops after the draft unless the current
     request already authorized downstream work; LIGHT returns only to work
     already authorized.
-11. **FULL for every job.** Prefer LIGHT when persistence and complete coverage
+12. **FULL for every job.** Prefer LIGHT when persistence and complete coverage
     would cost more than they save.
 
 ## Verification checklist
@@ -418,5 +465,9 @@ implementation.
 - [ ] Acceptance outcomes and evidence methods are observable at the selected
   operating level.
 - [ ] The output state is `LIGHT_READY`, `DRAFT_READY`, or `BLOCKED`.
+- [ ] Any ticketization handoff conforms to `to-spec-ticketization-v1`, binds
+      one exact source snapshot, and leaves publication authority `none`.
+- [ ] To-Spec created no ticket graph, ticket file, tracker issue, or
+      agent-ready label.
 - [ ] No external publication, label, task, plan, or implementation occurred
   without explicit authority from the current user request.

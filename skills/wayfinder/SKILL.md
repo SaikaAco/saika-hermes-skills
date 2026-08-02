@@ -1,14 +1,14 @@
 ---
 name: wayfinder
 description: "Use for medium-to-large work with multiple material decisions, dependencies, fog, or multi-session coordination. Applies a lightweight in-session route automatically when useful and a durable full Wayfinder package when explicitly invoked or scale requires persistence."
-version: 1.1.0
+version: 1.3.0
 author: "SaikaAco with Hermes Agent, adapted from Matt Pocock"
 license: MIT
 platforms: [linux, macos, windows]
 metadata:
   hermes:
-    tags: [wayfinder, decisions, research, planning, traceability]
-    related_skills: [bounded-grilling, to-spec, kanban-workflows]
+    tags: [wayfinder, decisions, research, prototype, planning, traceability]
+    related_skills: [wf, bounded-grilling, prototype, to-spec, to-tickets, kanban-workflows]
     upstream: "https://github.com/mattpocock/skills/tree/main/skills/engineering/wayfinder"
 ---
 
@@ -22,16 +22,29 @@ It retains the destination, map, decision-ticket, frontier, fog, and
 one-ticket-at-a-time concepts while adding Hermes-specific authority,
 persistence, recovery, mode, and handoff contracts.
 
+The complete upstream MIT notice is preserved in
+[`references/third-party-notices.md`](references/third-party-notices.md).
+
 ## Overview
 
 Wayfinder charts a durable route through an effort too large or uncertain for
 one session. It owns the map, fog, frontier, ticket lifecycle, persistence,
-and readiness handoff. It resolves decisions and evidence—not the destination
-itself.
+handler routing, and readiness handoff. It resolves decisions and evidence—not
+the destination itself.
 
 ```text
-Bounded Grill -> Wayfinder -> To-Spec
+Bounded Grill -> Wayfinder
+  DECISION     -> Bounded Grilling
+  EVIDENCE     -> verified evidence handler
+  PROTOTYPE    -> `/prototype`: runnable artifact + human reaction
+  PREREQUISITE -> bounded task/checklist
+Wayfinder -> To-Spec -> `/to-tickets` (separate explicit authority)
 ```
+
+The canonical shared handler contracts live in:
+
+- `references/evidence-handler.md`
+- `references/prototype-handler.md`
 
 For a small effort whose route is already clear:
 
@@ -41,7 +54,14 @@ Bounded Grill -> To-Spec
 
 ## Adaptive invocation and operating level
 
-Choose `LIGHT` or `FULL` before applying the workflow.
+When `/wf` is manually invoked or its automatic ambiguity gate detects one
+genuine route-affecting unknown, enter Wayfinder LIGHT immediately when this
+skill is the selected handler; the ordinary multi-signal heuristic below is not
+required. Investigate discoverable facts first and route one human-owned value
+to Bounded Grilling rather than assuming it. Do not create FULL artifacts from
+this standing ambiguity authority alone.
+
+Otherwise choose `LIGHT` or `FULL` before applying the workflow.
 
 ### LIGHT — model-invokable, non-persistent
 
@@ -105,6 +125,11 @@ implementation, deployment, or unrelated side effects.
   the user explicitly authorizes that tracker.
 - Prerequisite work may only expose evidence needed for a decision; it may not
   become destination implementation.
+- Research dispatch is not ticket resolution: cited results require parent
+  verification and persistence before closure.
+- Prototype authority permits only the named throwaway decision artifact. It
+  never authorizes production implementation, main-branch integration,
+  publication, deployment, or cleanup.
 - Stop immediately on a user stop signal.
 - A FULL To-Spec handoff requires either an explicit user request or an
   already-authorized workflow whose endpoint includes specification. LIGHT
@@ -201,7 +226,7 @@ Each ticket has one stable tracker or local identity and one precise question:
 # <Ticket title>
 
 ID: <authoritative identity>
-Type: DECISION | EVIDENCE | PREREQUISITE
+Type: DECISION | EVIDENCE | PROTOTYPE | PREREQUISITE
 Mode: HITL | AFK
 Status: OPEN | CLAIMED | RESOLVED | DEFERRED | BLOCKED | OUT_OF_SCOPE | SUPERSEDED
 Blocked by: <handles or none>
@@ -226,11 +251,54 @@ Ticket types:
 
 - `DECISION` / `HITL` — one human-owned route decision, resolved through
   Bounded Grill's Wayfinder mode.
-- `EVIDENCE` / `AFK` — one discoverable factual question, resolved with the
-  active profile's permitted research and inspection tools.
+- `EVIDENCE` / `AFK` — one discoverable factual question. Resolve it through
+  `references/evidence-handler.md`, using the active profile's permitted
+  research/inspection tools and source hierarchy.
+- `PROTOTYPE` / `HITL` — one logic/state or UI-shaped decision that needs a
+  runnable throwaway artifact and actual human reaction. Invoke `/prototype`,
+  whose canonical contract is `references/prototype-handler.md`; prose alone
+  cannot close it.
 - `PREREQUISITE` / `AFK` or `HITL` — bounded manual work required to expose
   evidence. It needs explicit authority when it has side effects and may not
   deliver the destination.
+
+## Handler and closure gate
+
+Ticket type is a workflow gate, not a category. After claiming a ticket and
+immediately before resolution, re-read its authoritative type, question,
+blockers, claim, and current status. If type and prose disagree, stop for
+reconciliation rather than choosing the easier handler.
+
+Route exactly:
+
+- `DECISION` -> Bounded Grilling; require one accepted human decision packet.
+- `EVIDENCE` -> `references/evidence-handler.md`; require a valid
+  `wayfinder-evidence-v1` handoff with parent verification and confirmed
+  persistence.
+- `PROTOTYPE` -> invoke `/prototype`, whose canonical contract is
+  `references/prototype-handler.md`; require a valid
+  `wayfinder-prototype-v1` handoff, a smoke-verified artifact, actual human
+  reaction, and an accepted decision.
+- `PREREQUISITE` -> perform only the authorized bounded task; require observable
+  completion evidence, or leave the ticket open with a precise human checklist
+  or blocker.
+
+Before marking any ticket resolved:
+
+1. Re-fetch/re-read the ticket and claim; abort or reconcile stale, closed, or
+   rival work.
+2. Verify handler-specific evidence and all referenced artifacts.
+3. Classify outputs as durable shared context, ticket evidence, disposable
+   intermediate, or potential implementation.
+4. Reconcile durable shared context into its canonical location. Never strand
+   it on a research/prototype branch or isolated workspace.
+5. Persist the full resolution in the ticket first, then reconcile the map.
+6. If evidence persists but context/map reconciliation fails, return
+   `RECONCILE_REQUIRED`; do not duplicate or silently close the ticket.
+
+An ADVANCE invocation becomes spent after one handler outcome, including a
+blocker, deferral, or `PROTOTYPE_REQUIRED` escalation. It may repair
+bookkeeping for that ticket but may not claim another ticket.
 
 ## CHART mode
 
@@ -258,11 +326,19 @@ Ticket types:
    boundaries, and fog.
 7. Create only questions precise enough to be tickets. Leave coarser
    uncertainty under `Not yet specified`.
-8. Assign stable identities, types, modes, blockers, and creation order.
+8. Assign stable identities, types, modes, blockers, and creation order. Use
+   `PROTOTYPE` when interaction with a concrete artifact is required; do not
+   disguise it as prose `DECISION` or generic `PREREQUISITE` work.
 9. Write and verify every imported and open ticket before writing the map
    index.
 10. Re-read the persisted map and tickets.
-11. Return `MAP_READY` and stop. Resolve no frontier ticket during charting.
+11. Optionally dispatch independent `EVIDENCE` tickets through
+    `references/evidence-handler.md` only after their records are durable.
+    Dispatch does not resolve or close them. Use `delegate_task` only when the
+    parent session can safely receive the result; use authorized Kanban for
+    restart-durable work. Record every dispatch handle.
+12. Return `MAP_READY`, include any evidence dispatch handles, and stop.
+    Resolve or claim no non-evidence frontier ticket during charting.
 
 ## ADVANCE mode
 
@@ -270,14 +346,26 @@ Ticket types:
 2. Select the user-named ticket or the first open, unblocked, unclaimed ticket
    in stable creation order.
 3. Claim it before work. If the claim cannot be made safely, return `BLOCKED`.
-4. Resolve exactly one ticket:
+4. Re-read the claimed ticket's authoritative type, body, blockers, claim, and
+   current status, then run exactly one handler:
    - `DECISION` — invoke Bounded Grill Wayfinder mode with the ticket handle,
-     destination, question, relevant decisions, and direct dependencies.
-   - `EVIDENCE` — inspect or research discoverable facts; cite authoritative
-     handles and do not ask the user for lookup work.
+     destination, question, relevant decisions, and direct dependencies. If
+     the decision cannot be judged faithfully in prose, consume a
+     `PROTOTYPE_REQUIRED` return by leaving the decision open, creating one
+     `PROTOTYPE` ticket, and then adding a create-then-link edge that makes the
+     decision ticket depend on the prototype ticket; do not fabricate the
+     decision.
+   - `EVIDENCE` — follow `references/evidence-handler.md`; inspect cited
+     sources and verify the result before persistence.
+   - `PROTOTYPE` — invoke `/prototype` and its canonical
+     `references/prototype-handler.md` contract; obtain artifact authority,
+     smoke-run the artifact, collect actual human reaction, and preserve the
+     accepted/rejected alternatives.
    - `PREREQUISITE` — perform only the already-authorized bounded work needed
-     to expose evidence. Otherwise block with the required authority.
-5. Persist the full resolution in the ticket first.
+     to expose evidence. Otherwise block with the required authority or exact
+     human checklist.
+5. Apply the handler and closure gate. Persist the full resolution in the
+   ticket first.
 6. Close or resolve a decision only after its accepted record is confirmed
    persisted. A normal deferral remains open and blocking; close it only when
    the product acceptor explicitly marks it non-blocking.
@@ -314,7 +402,7 @@ Wayfinder may emit `READY_FOR_SPEC` only when all five conditions hold:
 2. Every route-changing decision is accepted, blocked, or explicitly deferred
    as non-blocking by the product acceptor.
 3. No material in-scope fog remains hidden or unclassified.
-4. No eligible decision, evidence, or prerequisite ticket remains.
+4. No eligible decision, evidence, prototype, or prerequisite ticket remains.
 5. The product acceptor explicitly determines the route is ready for local
    specification.
 
@@ -390,10 +478,17 @@ explicitly authorized by the current user request.
 7. **Unsafe tracker default.** Use external systems only when authorized.
 8. **Duplicate claims.** Serialize or use a real exclusive claim.
 9. **Close-before-persist.** Persist first; close only after confirmation.
-10. **Lossy handoff.** Emit every current decision handle.
-11. **Unscoped To-Spec.** Invoke FULL only when requested or already included
+10. **Handler bypass.** Ticket type controls the resolver; a prose answer cannot
+    close a `PROTOTYPE`, unverified summaries cannot close `EVIDENCE`, and the
+    agent cannot close `DECISION` without the human owner.
+11. **Dispatch-as-resolution.** A research child self-report is not verified or
+    persisted evidence. Inspect sources and artifacts before closure.
+12. **Prototype promotion.** A prototype decision does not authorize production
+    implementation or merging disposable code.
+13. **Lossy handoff.** Emit every current decision handle.
+14. **Unscoped To-Spec.** Invoke FULL only when requested or already included
     in the authorized workflow; prefer automatic LIGHT otherwise.
-12. **Stale-route reuse.** Preserve history and mark superseded handles.
+15. **Stale-route reuse.** Preserve history and mark superseded handles.
 
 ## Verification checklist
 
@@ -403,10 +498,18 @@ explicitly authorized by the current user request.
 - [ ] A FULL operation mode is explicit.
 - [ ] One authorized persistence backend is selected for FULL.
 - [ ] The map is an index and every decision has one authoritative ticket.
-- [ ] Chart mode resolved no tickets.
-- [ ] Advance mode resolved at most one ticket.
+- [ ] Chart mode resolved no tickets and claimed no non-evidence ticket; any
+      evidence dispatch happened only after ticket persistence.
+- [ ] Advance mode ran exactly one claimed ticket handler and became spent
+      after its outcome; it resolved at most one ticket.
+- [ ] The claimed ticket was re-read and its type controlled the handler.
 - [ ] HITL decisions used Bounded Grill without self-answering.
-- [ ] Discoverable facts were researched with source handles.
+- [ ] Evidence tickets returned verified, persisted `wayfinder-evidence-v1`
+      handoffs with inspected sources.
+- [ ] Prototype tickets returned smoke-verified `wayfinder-prototype-v1`
+      handoffs with actual human reaction.
+- [ ] Durable shared context was reconciled separately from ticket evidence and
+      disposable prototype/research artifacts.
 - [ ] Ticket persistence preceded map reconciliation.
 - [ ] Claims and blockers are safe and current.
 - [ ] Exit status follows all five conditions.

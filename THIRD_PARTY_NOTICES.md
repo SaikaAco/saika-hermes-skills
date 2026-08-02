@@ -2,12 +2,15 @@
 
 This repository contains adapted third-party material. The repository-level [LICENSE](LICENSE) applies to SaikaAco contributions; the notices below are retained for the identified adapted material.
 
-## Matt Pocock’s Wayfinder and To-Spec
+## Matt Pocock’s Wayfinder, To-Spec, Prototype, and To-Tickets
 
 Affected packages:
 
 - `skills/wayfinder/SKILL.md`
+- `skills/wayfinder/references/prototype-handler.md`
 - `skills/to-spec/SKILL.md`
+- `skills/prototype/SKILL.md`
+- `skills/to-tickets/SKILL.md`
 
 Upstream source: <https://github.com/mattpocock/skills>
 

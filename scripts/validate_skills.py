@@ -6,11 +6,13 @@ from __future__ import annotations
 from pathlib import Path
 import re
 import sys
+from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILLS = ROOT / "skills"
 REQUIRED_FIELDS = ("name", "description", "version", "author", "license")
 SEMVER = re.compile(r"^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$")
+MARKDOWN_LINK = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
 SECRET_PATTERNS = {
     "private key": re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"),
     "AWS access key": re.compile(r"\bAKIA[0-9A-Z]{16}\b"),
@@ -69,15 +71,40 @@ def validate_skill(skill_dir: Path) -> list[str]:
     if text.count("```") % 2:
         errors.append(f"{skill_md}: unbalanced fenced code blocks")
 
-    for marker in PRIVATE_MARKERS:
-        if marker in text:
-            errors.append(f"{skill_md}: private marker found: {marker!r}")
-    for label, pattern in SECRET_PATTERNS.items():
-        if pattern.search(text):
-            errors.append(f"{skill_md}: possible {label} found")
+    package_root = skill_dir.resolve()
     for path in skill_dir.rglob("*"):
         if path.is_symlink():
             errors.append(f"{path}: symlinks are not allowed in published packages")
+            continue
+        if not path.is_file():
+            continue
+        try:
+            package_text = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            continue
+        for marker in PRIVATE_MARKERS:
+            if marker in package_text:
+                errors.append(f"{path}: private marker found: {marker!r}")
+        for label, pattern in SECRET_PATTERNS.items():
+            if pattern.search(package_text):
+                errors.append(f"{path}: possible {label} found")
+        if path.suffix.lower() != ".md":
+            continue
+        for raw_target in MARKDOWN_LINK.findall(package_text):
+            target = raw_target.strip().split(maxsplit=1)[0].strip("<>")
+            if not target or target.startswith(("#", "https://", "http://", "mailto:")):
+                continue
+            relative = unquote(target.split("#", 1)[0].split("?", 1)[0])
+            if not relative:
+                continue
+            if Path(relative).is_absolute() or relative.startswith("~"):
+                errors.append(f"{path}: package link must be relative: {target!r}")
+                continue
+            resolved = (path.parent / relative).resolve()
+            if not resolved.is_relative_to(package_root):
+                errors.append(f"{path}: package link escapes skill directory: {target!r}")
+            elif not resolved.exists():
+                errors.append(f"{path}: package link target is missing: {target!r}")
     return errors
 
 
