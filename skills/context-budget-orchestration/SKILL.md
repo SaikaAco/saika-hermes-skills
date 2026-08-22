@@ -1,7 +1,7 @@
 ---
 name: context-budget-orchestration
 description: "Use when work is multi-step, context-heavy, research-heavy, or delegated. Contains bulky context, phases work, bounds retries, delegates independent reasoning, and reserves capacity for verification."
-version: 1.0.1
+version: 1.1.0
 author: "SaikaAco with Hermes Agent"
 license: MIT
 platforms: [linux, macos, windows]
@@ -176,6 +176,44 @@ The parent owns the final synthesis and decision.
 - For bounded background processes, use completion notification rather than repeated polling when available.
 - Batch screenshots, viewport checks, and console inspection into one verification pass per implemented state.
 - Stop broad collection when outputs repeat, contradict without new evidence, or no longer change the decision.
+
+## Timeout and exhaustion postmortem
+
+A timeout or exhausted budget is diagnostic evidence, not permission to retry
+the same topology with more effort or a longer wall clock.
+
+1. **Stop and inspect.** Verify that the previous worker or process is no
+   longer live. Inspect the parent and child timelines, actual fan-out,
+   longest tool or model calls, context growth, partial outputs, and the exact
+   timeout or exhaustion condition.
+2. **Salvage completed work.** Preserve useful sibling results, artifacts,
+   tests, and evidence handles. One failed shard does not invalidate successful
+   independent work.
+3. **Classify the cause.** Distinguish oversized scope, serial dependency,
+   unbounded collection, external latency, deterministic test duration,
+   provider failure, and a genuine concurrency or call-budget cap.
+4. **Write the retry DAG.** Before another orchestrated attempt, define bounded
+   shards, dependencies, exact source or file scopes, output contracts, stop
+   conditions, and verification owners.
+5. **Retry only incomplete shards.** Prefer independently completable fan-out
+   so one timeout cannot hide or cancel successful siblings. Avoid broad
+   repository-wide scans unless their scope and stopping rule are explicit.
+6. **Use orchestrators for coordination.** Supply the task DAG, existing
+   evidence, contradictions, and bounded decisions. Do not place discovery,
+   implementation, testing, and review serially behind one worker deadline.
+7. **Separate execution surfaces.** Assign one implementation owner per
+   overlapping file cluster; use deterministic tools for builds and tests;
+   freeze the artifact before independent review.
+8. **Audit the actual topology.** Compare requested versus dispatched workers,
+   require evidence handles, verify writes and tests at the parent, and treat
+   omitted or unverified work as incomplete.
+9. **Escalate surgically.** Raise effort or narrow the contract only for the
+   failed shard. Increase global timeout, concurrency, or budget only when the
+   postmortem shows that resource limit was causal.
+
+Never treat silence, an absent result, a timeout notice, or an exhaustion
+summary as success. Record the repaired topology in the project ledger when
+the same task class may recur.
 
 ## Fan-out / fan-in patterns
 

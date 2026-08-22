@@ -10,7 +10,7 @@ These packages are curated from workflows used in practice. The repository remai
 |---|---:|---|
 | [`bounded-grilling`](skills/bounded-grilling/SKILL.md) | 1.2.0 | Resolve a small number of material human decisions without endless interviewing or automatic implementation. |
 | [`burnable-visual-briefs`](skills/burnable-visual-briefs/SKILL.md) | 1.1.0 | Create temporary, diagram-first HTML briefs with strict privacy, expiry, validation, and rendering gates. |
-| [`context-budget-orchestration`](skills/context-budget-orchestration/SKILL.md) | 1.0.1 | Contain bulky context, phase long work, bound delegation and retries, and reserve capacity for verification. |
+| [`context-budget-orchestration`](skills/context-budget-orchestration/SKILL.md) | 1.1.0 | Contain bulky context, phase long work, diagnose timeout or exhaustion before retrying, and reserve capacity for verification. |
 | [`hermes-backup-recovery`](skills/hermes-backup-recovery/SKILL.md) | 1.0.0 | Build encrypted, atomic Hermes backups with WAL-safe databases, manifest gates, and verified clean-room recovery. |
 | [`hermes-workspace-hygiene`](skills/hermes-workspace-hygiene/SKILL.md) | 1.0.0 | Keep generated artifacts scoped and make cleanup manifest-bound, approval-gated, and recoverable. |
 | [`skill-lifecycle-management`](skills/skill-lifecycle-management/SKILL.md) | 1.1.0 | Author, package, attribute, publish, consumer-test, consolidate, and archive Hermes skills safely. |
