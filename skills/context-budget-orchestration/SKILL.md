@@ -1,7 +1,7 @@
 ---
 name: context-budget-orchestration
 description: "Use when work is multi-step, context-heavy, research-heavy, or delegated. Contains bulky context, phases work, bounds retries, delegates independent reasoning, and reserves capacity for verification."
-version: 1.1.0
+version: 1.2.0
 author: "SaikaAco with Hermes Agent"
 license: MIT
 platforms: [linux, macos, windows]
@@ -177,10 +177,97 @@ The parent owns the final synthesis and decision.
 - Batch screenshots, viewport checks, and console inspection into one verification pass per implemented state.
 - Stop broad collection when outputs repeat, contradict without new evidence, or no longer change the decision.
 
+## Hard first-attempt sizing and retry embargo
+
+Optimize for one robust run rather than repeated cheap attempts. When elapsed
+time matters more than token economy, spend the necessary reasoning budget in
+the first attempt through deterministic reduction and independently
+completable parallel shards.
+
+### Mandatory first-attempt sizing record
+
+Before every nontrivial delegation, record internally:
+
+- the number and total expected bytes of named input artifacts;
+- the number of independent reasoning domains;
+- expected tool or API calls;
+- serial dependencies;
+- target wall time per shard;
+- deterministic work that should remain in the parent or a programmatic tool.
+
+A single reasoning child is admissible only when all of these are true:
+
+- the task has one reasoning domain;
+- it names no more than four input artifacts;
+- total expected input is no more than 100 KiB;
+- it requires no repository-wide or full-tree search;
+- it expects no more than eight tool or API calls;
+- it does not combine discovery, derivation, and review in one worker.
+
+Crossing any threshold requires a parent-written task DAG and either direct
+parallel children or a bounded orchestrator. Keep every shard independently
+completable and target roughly four to eight minutes per reasoning shard.
+
+### Material expansion invalidates strategy reuse
+
+A previously successful strategy applies only to materially comparable scope.
+Do not reuse it unchanged when:
+
+- a new reasoning domain is added;
+- named artifacts or expected bytes grow by more than twofold;
+- discovery expands into derivation, implementation, or adversarial review;
+- a second independent verdict is required;
+- expected calls cross the single-child ceiling.
+
+When strategy or precedent identifiers are available, material expansion
+requires a new task class or an explicitly scope-qualified strategy. A pass on
+a smaller task does not validate the same topology for a larger one.
+
+### First-run resource preference
+
+When the user prioritizes elapsed time over token economy:
+
+- reduce deterministic inputs before delegation;
+- dispatch every independent required shard in the first attempt;
+- use higher reasoning effort for review or architecture and reserve the
+  highest permitted effort for a decisive shard whose complexity or failed
+  verification warrants it;
+- give every shard exact artifacts, output schema, stop conditions, and a word
+  cap;
+- preserve sibling results independently so one timeout cannot hide them;
+- prefer one bounded, adequately resourced fan-out over serial trial and error.
+
+### Retry embargo and acceptance test
+
+After any timeout, do not dispatch another attempt until all are true:
+
+- the prior handle is verified no longer live;
+- available call count, timeline, partial output, and kill condition are
+  inspected;
+- useful artifacts and sibling results are salvaged;
+- the cause is classified;
+- a compact postmortem and revised task DAG exist;
+- the new attempt changes scope or topology in a way that addresses the
+  classified cause.
+
+For that task, quarantine the timed-out strategy identifier, worker count,
+serial-dependency structure, and any materially equivalent contract. More
+effort or a longer prompt is not a topology change.
+
+Before retrying, the parent must be able to support this sentence with
+evidence:
+
+```text
+The previous attempt failed because <classified cause>; this attempt removes that cause by <material DAG or topology change>.
+```
+
+If the sentence cannot be supported, do not retry.
+
 ## Timeout and exhaustion postmortem
 
 A timeout or exhausted budget is diagnostic evidence, not permission to retry
-the same topology with more effort or a longer wall clock.
+the same topology with more effort or a longer wall clock. Apply the sizing and
+retry embargo above, then use this diagnostic workflow.
 
 1. **Stop and inspect.** Verify that the previous worker or process is no
    longer live. Inspect the parent and child timelines, actual fan-out,
@@ -300,6 +387,7 @@ When the parent starts repeating calls, losing constraints, or depending on memo
 8. **Retry loops:** repeated use of a failed surface without new evidence is not progress.
 9. **Optional-branch creep:** collection expands until no verification reserve remains.
 10. **Permission drift:** methodology does not grant provider, payment, or external-action authority.
+11. **Precedent overreach:** a topology that passed for a small task is not evidence that it fits materially expanded scope.
 
 ## Verification checklist
 
@@ -307,7 +395,9 @@ When the parent starts repeating calls, losing constraints, or depending on memo
 - [ ] Deterministic bulk output was reduced to decision-relevant summaries before parent synthesis.
 - [ ] Required independent reasoning was delegated early with bounded contracts.
 - [ ] User and runtime delegation/provider limits were respected.
+- [ ] Every nontrivial delegation was sized before dispatch; single-child work stayed within all ceilings or used a parent-written DAG.
 - [ ] Same-surface retries were capped and switched after failure.
+- [ ] Every timeout retry passed the embargo and changed topology or scope to remove the classified cause.
 - [ ] Required child results arrived before synthesis.
 - [ ] Material claims and side effects were verified by the parent.
 - [ ] New branches froze before the final verification phase.
